@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Catch Game</title>
+
+<style>
+body{
+    margin:0;
+    background:#111;
+    font-family:Arial;
+    text-align:center;
+    color:white;
+}
+
+h1{
+    margin-top:10px;
+}
+
+#game{
+    width:400px;
+    height:500px;
+    background:#222;
+    margin:20px auto;
+    position:relative;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+#player{
+    width:80px;
+    height:20px;
+    background:#00ffcc;
+    position:absolute;
+    bottom:10px;
+    left:160px;
+    border-radius:10px;
+}
+
+#ball{
+    width:20px;
+    height:20px;
+    background:#ff4444;
+    border-radius:50%;
+    position:absolute;
+    top:0;
+    left:190px;
+}
+
+#score{
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Catch The Ball 🎮</h1>
+<div id="score">Score: 0</div>
+
+<div id="game">
+    <div id="player"></div>
+    <div id="ball"></div>
+</div>
+
+<script>
+
+const player = document.getElementById("player");
+const ball = document.getElementById("ball");
+const game = document.getElementById("game");
+const scoreText = document.getElementById("score");
+
+let score = 0;
+let ballY = 0;
+let ballX = Math.random()*380;
+
+ball.style.left = ballX + "px";
+
+game.addEventListener("mousemove",(e)=>{
+    const rect = game.getBoundingClientRect();
+    let x = e.clientX - rect.left - 40;
+
+    if(x < 0) x = 0;
+    if(x > 320) x = 320;
+
+    player.style.left = x + "px";
+});
+
+function gameLoop(){
+
+    ballY += 4;
+    ball.style.top = ballY + "px";
+
+    const playerX = player.offsetLeft;
+    const ballX = ball.offsetLeft;
+
+    if(ballY > 470){
+        if(ballX > playerX && ballX < playerX + 80){
+            score++;
+            scoreText.innerText = "Score: " + score;
+        }
+
+        ballY = 0;
+        ball.style.left = Math.random()*380 + "px";
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+</script>
+
+</body>
+</html>
